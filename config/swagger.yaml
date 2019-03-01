@@ -1,0 +1,24 @@
+  swagger: "2.0"
+  info:
+    version: 1.0.0
+    title: Swagger my-tourist-server
+    description: A sample API for my-tourist-server
+
+  consumes:
+    - application/json
+  produces:
+    - application/json
+
+  paths:
+    /api:
+      x-swagger-router-controller: home
+      get:
+        summary: It is the home of the API
+        description: >
+          Returns anything, it is the main entry point fo the API
+        operationId: getAPI
+        tags:
+          - home
+        responses:
+          '200':
+            description: Returns anything
