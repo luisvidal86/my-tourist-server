@@ -4,7 +4,7 @@
   "description": "A server REST API for tourist information",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine --config=jasmine.json"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,9 @@
     "body-parser": "1.18.3",
     "express": "4.16.4",
     "swagger-express-mw": "0.7.0"
+  },
+  "devDependencies": {
+    "jasmine": "3.3.1",
+    "nock": "10.0.6"
   }
 }

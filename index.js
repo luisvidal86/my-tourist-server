@@ -12,12 +12,12 @@ const swaggerConfig = {
 }
 
 // tells swagger where to find the definition of the API
-swaggerExpress.create(swaggerConfig, (error, swagerExpress) => {
+swaggerExpress.create(swaggerConfig, (error, swagger) => {
 	if(error) {
 		console.log("there was an error with swagger", { error: error });
 		throw error;
 	}
-	swagerExpress.register(app);
+	swagger.register(app);
 });
 
 // Start the server
