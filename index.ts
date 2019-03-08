@@ -1,9 +1,9 @@
 // import or require express.
-const express = require("express");
+import * as express from "express";
 // create our express app
 const app = express();
 // import or require our swagger middleware
-const swaggerExpress = require("swagger-express-mw");
+import * as swaggerExpress from "swagger-express-mw";
 const port = 4200;
 
 const swaggerConfig = {
