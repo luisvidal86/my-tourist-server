@@ -10,4 +10,8 @@ export class PlaceService {
     public static async addPlace(place: string, placeImg: Express.Multer.File): Promise<IExtendedPlace> {
         return this.placeRepository().store(place, placeImg);
     }
+
+    public static async getPlaces(): Promise<IExtendedPlace[]> {
+        return this.placeRepository().retrieveAll();
+    }
 }
