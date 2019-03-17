@@ -1,31 +1,13 @@
 "use strict";
 
-import { IBasicPlace, IExtendedPlace } from "../models/place";
+import { IExtendedPlace } from "../models/place";
+import { IPlaceRepository } from "../infrastructure/place-repository";
+import { BootstrapResolver } from "../infrastructure/bootstrap-resolver";
 
-import * as uuid from "uuid/v1";
+export class PlaceService {
+    private static placeRepository(): IPlaceRepository { return BootstrapResolver.placeRepository(); }
 
-export interface IPlaceService {
-    addPlace(place: IBasicPlace): IExtendedPlace;
-}
-
-export class PlaceService implements IPlaceService {
-    private static _instance: PlaceService;
-    private places: IExtendedPlace[];
-
-    private constructor() {
-        this.places = [];
-    }
-
-    public static get Instance() {
-        return this._instance || (this._instance = new this());
-    }
-
-    public addPlace(place: IBasicPlace): IExtendedPlace {
-        place.id = uuid();
-        if(this.places.push(place) > 0) {
-            return place;
-        }
-
-        return undefined;
+    public static async addPlace(place: string, placeImg: Express.Multer.File): Promise<IExtendedPlace> {
+        return this.placeRepository().store(place, placeImg);
     }
 }

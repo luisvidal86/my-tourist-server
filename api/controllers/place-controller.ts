@@ -2,15 +2,26 @@
 
 import { PlaceService } from "../services/place-service";
 import { Request, Response } from "express";
+import { IExtendedPlace } from "../models/place";
 
-export function createPlace(req: Request, res: Response): void {
-    const place = req['swagger'].params['place'].value;
-    const placeService = PlaceService.Instance;
+export async function createPlace(req: Request, res: Response): Promise<void> {
+    const place: string = req['swagger'].params['place'].value;
+    const placeImg: Express.Multer.File = req['swagger'].params['placeImg'].value;
 
-    const placeAdded = placeService.addPlace(place);
-    if(placeAdded) {
-        res.status(200).json(placeAdded);
-    } else {
-        res.status(500).end();
+    try {
+        const placeAdded: IExtendedPlace = await PlaceService.addPlace(place, placeImg);
+        if (placeAdded) {
+            res.status(200).json(placeAdded);
+        } else {
+            res.status(500).end({
+                code: 1003,
+                error: "place has not been added"
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            code: error.code,
+            error: error.message
+        });
     }
 }
