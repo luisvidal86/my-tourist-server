@@ -21,7 +21,8 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "swagger-express-mw": "0.7.0"
+    "swagger-express-mw": "0.7.0",
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@types/express": "4.16.1",

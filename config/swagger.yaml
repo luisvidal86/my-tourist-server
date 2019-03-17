@@ -1,24 +1,75 @@
-  swagger: "2.0"
-  info:
-    version: 1.0.0
-    title: Swagger my-tourist-server
-    description: A sample API for my-tourist-server
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Swagger my-tourist-server
+  description: A sample API for my-tourist-server
 
-  consumes:
-    - application/json
-  produces:
-    - application/json
+schemes:
+  - http
+consumes:
+  - application/json
+  #- application/octet-stream
+produces:
+  - application/json
 
-  paths:
-    /api:
-      x-swagger-router-controller: home
-      get:
-        summary: It is the home of the API
-        description: >
-          Returns anything, it is the main entry point fo the API
-        operationId: getAPI
-        tags:
-          - home
-        responses:
-          '200':
-            description: Returns anything
+paths:
+  /api:
+    x-swagger-router-controller: home
+    get:
+      summary: It is the home of the API
+      description: >
+        Returns anything, it is the main entry point for the API
+      operationId: getAPI
+      tags:
+        - home
+      responses:
+        '200':
+          description: Returns anything
+  /api/places:
+    x-swagger-router-controller: place-controller
+    post:
+      summary: Adds a new place to our list of places.
+      description: >
+        This endpoint allows users to upload new places to the server
+      operationId: createPlace
+      tags:
+        - places
+      parameters:
+        - name: place
+          in: body
+          description: a place
+          required: true
+          schema: 
+            $ref: '#/definitions/Place'
+      responses:
+        '201':
+          description: Places has been added successfully
+        '400':
+          description: Place is not valid
+        '500':
+          description: There was an error storing a place
+
+definitions:
+  Place:
+    description: a Place
+    required:
+      - name
+      - description
+      - address
+      - group
+      - tag
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      address:
+        type: string
+      image:
+        type: string
+      group:
+        type: string
+      tag:
+        type: string
