@@ -18,4 +18,8 @@ export class PlaceService {
     public static async getPlaceById(placeId: string): Promise<IExtendedPlace> {
         return this.placeRepository().retriveById(placeId);
     }
+
+    public static async removePlaceById(placeId: string): Promise<IExtendedPlace> {
+        return this.placeRepository().deleteById(placeId);
+    }
 }
