@@ -10,7 +10,7 @@ export interface IBasicPlace {
     address: string;
     image: string;
     group: PlaceGroup;
-    tags: PlaceTag;
+    tag: PlaceTag;
 }
 
 export interface IExtendedPlace extends IBasicPlace {
