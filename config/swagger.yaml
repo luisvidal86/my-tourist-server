@@ -27,6 +27,22 @@ paths:
           description: Returns anything
   /api/places:
     x-swagger-router-controller: place-controller
+    get:
+      summary: Retrieves a list of places
+      description: >
+        This enpoint allows users to retrieve a complete list of places from the server
+      operationId: retrievePlaces
+      tags:
+        - places
+      responses:
+        '200':
+          description: List of places
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                $ref: '#/definitions/Place'
     post:
       summary: Adds a new place to our list of places.
       description: >
@@ -49,7 +65,7 @@ paths:
           type: string
       responses:
         '201':
-          description: Places has been added successfully
+          description: Place has been added successfully
           schema:
             $ref: '#/definitions/Place'
         '400':

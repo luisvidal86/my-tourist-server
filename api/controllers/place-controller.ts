@@ -25,3 +25,8 @@ export async function createPlace(req: Request, res: Response): Promise<void> {
         });
     }
 }
+
+export async function retrievePlaces(req: Request, res: Response): Promise<void> {
+    const places = await PlaceService.getPlaces();
+    res.status(200).json(places);
+}
