@@ -9,6 +9,7 @@ export interface IPlaceRepository {
     store(place: string, placeImg: Express.Multer.File): Promise<IExtendedPlace>;
     retrieveAll(): Promise<IExtendedPlace[]>;
     retriveById(placeId: string): Promise<IExtendedPlace>;
+    deleteById(placeId: string): Promise<IExtendedPlace>;
 }
 
 export class PlaceRepository implements IPlaceRepository {
@@ -27,7 +28,7 @@ export class PlaceRepository implements IPlaceRepository {
         const imagePath: string = await this.storeImageInDisk(placeId, basicPlace.name, placeImg);
         const extendedPlace: IExtendedPlace = {...basicPlace, id: uuid(), image: imagePath} as IExtendedPlace;
 
-        if(this.places.push(extendedPlace) > 0) {
+        if (this.places.push(extendedPlace) > 0) {
             return extendedPlace;
         }
 
@@ -39,13 +40,30 @@ export class PlaceRepository implements IPlaceRepository {
     }
 
     public async retriveById(placeId: string): Promise<IExtendedPlace> {
-        return this.places.find((place) => {
+        return this.places.find((place: IExtendedPlace) => {
             return place.id === placeId;
         });
     }
 
+    public async deleteById(placeId: string): Promise<IExtendedPlace> {
+        const placeIndex = this.findPlaceIndex(placeId);
+        if (placeIndex < 0) {
+            return undefined
+        } 
+
+        try {
+            const placeToDelete = this.places[placeIndex];
+            this.places.splice(placeIndex, 1);
+            return placeToDelete;
+        } catch (error) {
+            const serverError: ServerError = new ServerError(`there was an error removing a place: ${placeId}`);
+            serverError.code = 2001;
+            throw serverError;
+        }
+    }
+
     private async storeImageInDisk(placeId: string, placeName: string, placeImg: Express.Multer.File): Promise<string> {
-        try{
+        try {
             const imageSubFolder: string = placeName.split(' ').join('_');
             const imageFileName: string = placeId;
             const imageRootFolder: string = path.resolve(this.imagesDiskBasePath, imageSubFolder);
@@ -65,12 +83,18 @@ export class PlaceRepository implements IPlaceRepository {
     }
 
     private toBasicPlace(place: string): IBasicPlace {
-        try{
+        try {
             return JSON.parse(place);
-        }catch(error) {
+        } catch(error) {
             const serverError: ServerError = new ServerError("there was an error parsing place, it is not a valid place");
             serverError.code = 1001;
             throw serverError;
         }
+    }
+
+    private findPlaceIndex(placeId: string): number {
+        return this.places.findIndex((place: IExtendedPlace) => {
+            return place.id === placeId;
+        });
     }
 }
