@@ -8,6 +8,7 @@ import { ServerError } from "../models/server-error";
 export interface IPlaceRepository {
     store(place: string, placeImg: Express.Multer.File): Promise<IExtendedPlace>;
     retrieveAll(): Promise<IExtendedPlace[]>;
+    retriveById(placeId: string): Promise<IExtendedPlace>;
 }
 
 export class PlaceRepository implements IPlaceRepository {
@@ -35,6 +36,12 @@ export class PlaceRepository implements IPlaceRepository {
 
     public async retrieveAll(): Promise<IExtendedPlace[]> {
         return this.places;
+    }
+
+    public async retriveById(placeId: string): Promise<IExtendedPlace> {
+        return this.places.find((place) => {
+            return place.id === placeId;
+        });
     }
 
     private async storeImageInDisk(placeId: string, placeName: string, placeImg: Express.Multer.File): Promise<string> {

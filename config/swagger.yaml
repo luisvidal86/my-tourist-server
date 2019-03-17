@@ -72,6 +72,29 @@ paths:
           description: Place is not valid
         '500':
           description: There was an error storing a place
+  /api/places/{placeId}:
+    x-swagger-router-controller: place-controller
+    get:
+      summary: Get a place given its ID
+      description: >
+        This endpoint allows users to find a place given its ID
+      operationId: retrieveById
+      tags:
+        - place
+      parameters:
+        - in: path
+          name: placeId
+          description: The place identifier
+          type: string
+          required: true
+      responses:
+        '200':
+          description: A place given its ID
+          schema:
+            $ref: '#/definitions/Place'
+        '404':
+          description: Place not found
+
 
 definitions:
   Place:
