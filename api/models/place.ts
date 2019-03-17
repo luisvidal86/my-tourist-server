@@ -4,16 +4,16 @@ export type PlaceGroup = "monument" | "cathedral" | "garden" | "castle" | "palac
 export type PlaceTag = "sightseeing" | "eat" | "sleep" | "activity";
 
 export interface IBasicPlace {
-    id: string;
     name: string;
     description: string;
     address: string;
-    image: string;
     group: PlaceGroup;
     tag: PlaceTag;
 }
 
 export interface IExtendedPlace extends IBasicPlace {
+    id: string;
+    image: string;
     web?: string;
     phone?: string;
     thumbnail?: string;

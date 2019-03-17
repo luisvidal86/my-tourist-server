@@ -8,7 +8,7 @@ schemes:
   - http
 consumes:
   - application/json
-  #- application/octet-stream
+  - application/octet-stream
 produces:
   - application/json
 
@@ -34,16 +34,24 @@ paths:
       operationId: createPlace
       tags:
         - places
+      consumes:
+        - multipart/form-data
       parameters:
-        - name: place
-          in: body
+        - in: formData
+          name: placeImg
+          type: file
+          required: true
+          description: The file to upload.
+        - in: formData
+          name: place
           description: a place
           required: true
-          schema: 
-            $ref: '#/definitions/Place'
+          type: string
       responses:
         '201':
           description: Places has been added successfully
+          schema:
+            $ref: '#/definitions/Place'
         '400':
           description: Place is not valid
         '500':

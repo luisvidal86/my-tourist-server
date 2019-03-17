@@ -1,11 +1,13 @@
 "use strict";
 
-// import or require express.
-import * as express from "express";
-// import or require our swagger middleware
-import * as swaggerExpress from "swagger-express-mw";
+import { Bootstrap } from "./api/bootstrap";
+import { ServerAddress } from "./api/utils/ServerAddress";
 
-const port = 4200;
+import * as express from "express";
+import * as swaggerExpress from "swagger-express-mw";
+import * as path from "path";
+
+const placeImagesRepository = "C:\\places";
 
 const swaggerConfig = {
 	appRoot: __dirname,
@@ -14,9 +16,12 @@ const swaggerConfig = {
 
 export class Server {
     private app: express.Application;
+    private bootstrap: Bootstrap;
+    private serverHost: URL;
     
     constructor() {
         this.app = express();
+        this.serverHost = ServerAddress.getFullHostUrl();
     }
 
     start(): void {
@@ -27,8 +32,15 @@ export class Server {
             }
             swagger.register(this.app);
         });
+
+        // export static content
+        this.app.use('/img', express.static(path.resolve(placeImagesRepository)));
         
         // Start the server
-        this.app.listen(port, () => console.log(`Server running on port ${port}`));
+        this.app.listen(parseInt(this.serverHost.port), "0.0.0.0", () => {
+            this.bootstrap = new Bootstrap(this.serverHost.href);
+            this.bootstrap.start();
+            console.log(`Server running on port ${this.serverHost.port}`)
+        });
     }
 }
