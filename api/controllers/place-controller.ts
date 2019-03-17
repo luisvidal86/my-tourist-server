@@ -30,3 +30,13 @@ export async function retrievePlaces(req: Request, res: Response): Promise<void>
     const places = await PlaceService.getPlaces();
     res.status(200).json(places);
 }
+
+export async function retrieveById(req: Request, res: Response): Promise<void> {
+    const placeId: string = req['swagger'].params['placeId'].value;
+    const place = await PlaceService.getPlaceById(placeId);
+    if(place){
+        res.status(200).json(place);
+    } else {
+        res.status(404).end();
+    }
+}

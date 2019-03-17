@@ -14,4 +14,8 @@ export class PlaceService {
     public static async getPlaces(): Promise<IExtendedPlace[]> {
         return this.placeRepository().retrieveAll();
     }
+
+    public static async getPlaceById(placeId: string): Promise<IExtendedPlace> {
+        return this.placeRepository().retriveById(placeId);
+    }
 }
