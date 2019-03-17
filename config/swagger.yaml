@@ -110,10 +110,48 @@ paths:
       responses:
         '200':
           description: The place has been removed successfully
+          schema:
+            $ref: '#/definitions/Place'
         '404':
           description: Place not found
         '500':
           description: There was an error removing the place
+    put:
+      summary: Update a place given its ID
+      description: >
+        This endpoint allows users to update a place given its ID
+      operationId: updateById
+      tags:
+        - place
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: placeId
+          description: The place identifier
+          type: string
+          required: true
+        - in: formData
+          name: placeImg
+          type: file
+          required: false
+          description: The file to upload.
+        - in: formData
+          name: place
+          description: a place
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Place updated successfully
+          schema:
+            $ref: '#/definitions/Place'
+        '400':
+          description: Place ID is not valid
+        '404':
+          description: Place not found
+        '500':
+          description: There was an error updating the place
 
 
 definitions:

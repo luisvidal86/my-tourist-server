@@ -60,3 +60,23 @@ export async function removeById(req: Request, res: Response): Promise<void> {
         });
     }
 }
+
+export async function updateById(req: Request, res: Response): Promise<void> {
+    const placeId: string = req['swagger'].params['placeId'].value;
+    const place: string = req['swagger'].params['place'].value;
+    const placeImg: Express.Multer.File = req['swagger'].params['placeImg'].value;
+
+    try {
+        const updatedPlace = await PlaceService.updatePlaceById(placeId, place, placeImg);
+        if (updatedPlace) {
+            res.status(200).json(updatedPlace);
+        } else {
+            res.status(404).end();
+        }
+    } catch(error) {
+        res.status(500).json({
+            code: error.code,
+            error: error.message
+        });
+    }
+}

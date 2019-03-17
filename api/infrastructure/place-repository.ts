@@ -10,6 +10,7 @@ export interface IPlaceRepository {
     retrieveAll(): Promise<IExtendedPlace[]>;
     retriveById(placeId: string): Promise<IExtendedPlace>;
     deleteById(placeId: string): Promise<IExtendedPlace>;
+    updateById(placeId: string, place: string, placeImg?: Express.Multer.File): Promise<IExtendedPlace>;
 }
 
 export class PlaceRepository implements IPlaceRepository {
@@ -43,6 +44,25 @@ export class PlaceRepository implements IPlaceRepository {
         return this.places.find((place: IExtendedPlace) => {
             return place.id === placeId;
         });
+    }
+
+    public async updateById(placeId: string, place: string, placeImg?: Express.Multer.File): Promise<IExtendedPlace> {
+        const existingPlace = await this.retriveById(placeId);
+        const placeIndex = this.findPlaceIndex(placeId);
+
+        if(!existingPlace || (placeIndex < 0)) {
+            return undefined;
+        }
+
+        const basicPlace: IBasicPlace = this.toBasicPlace(place);
+        Object.assign(existingPlace, basicPlace);
+        if(placeImg){
+            const imagePath: string = await this.storeImageInDisk(placeId, basicPlace.name, placeImg);
+            existingPlace.image = imagePath;
+        }
+        this.places[placeIndex] = existingPlace;
+
+        return existingPlace;
     }
 
     public async deleteById(placeId: string): Promise<IExtendedPlace> {

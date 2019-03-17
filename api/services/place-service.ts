@@ -22,4 +22,8 @@ export class PlaceService {
     public static async removePlaceById(placeId: string): Promise<IExtendedPlace> {
         return this.placeRepository().deleteById(placeId);
     }
+
+    public static async updatePlaceById(placeId: string, place: string, placeImg?: Express.Multer.File): Promise<IExtendedPlace> {
+        return this.placeRepository().updateById(placeId, place, placeImg);
+    }
 }
